@@ -1,47 +1,51 @@
-# Project Proposal
+# Capstone Project 1 Proposal
+## RevUp.com
+**A location for car enthusiests to schedule/create car meets and rsvp to attend a meet.**
 
-Use this template to help get you started right away! Once the proposal is complete, please let your mentor know that this is ready to be reviewed.
+## Tech Stack
 
-## Get Started
+### Front End
+- HTML
+- CSS
+- JavaScript
+- JQuery
 
-|            | Description                                                                                                                                                                                                                                                                                                                                              | Fill in |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| Tech Stack | What tech stack will you use for your final project? It is recommended to use the following technologies in this project: Python/Flask, PostgreSQL, SQLAlchemy, Heroku, Jinja, RESTful APIs, JavaScript, HTML, CSS. Depending on your idea, you might end up using WTForms and other technologies discussed in the course.                               |         |
-| Type       | Will this be a website? A mobile app? Something else?                                                                                                                                                                                                                                                                                                    |         |
-| Goal       | What goal will your project be designed to achieve?                                                                                                                                                                                                                                                                                                      |         |
-| Users      | What kind of users will visit your app? In other words, what is the demographic of your users?                                                                                                                                                                                                                                                           |         |
-| Data       | What data do you plan on using? How are you planning on collecting your data? You may have not picked your actual API yet, which is fine, just outline what kind of data you would like it to contain. You are welcome to create your own API and populate it with data. If you are using a Python/Flask stack, you are required to create your own API. |         |
+### BackEnd
+- Postgresql
+- Python
+- Flask
+- SQLAlchemy
+- WTForms
+- Jinja
 
-# Breaking down your project
+### Testing
+- Jasmine for front end
+- Unittest for back end
 
-When planning your project, break down your project into smaller tasks, knowing that you may not know everything in advance and that these details might change later. Some common tasks might include:
+## Front-end or Back-End?
+I will use back-end mostly in order to do most of the heavy lifting and management but javascript will be used in order to make the site more smooth and interactable as well as for the settings page.
 
-- Determining the database schema
-- Sourcing your data
-- Determining user flow(s)
-- Setting up the backend and database
-- Setting up the frontend
-- What functionality will your app include?
-  - User login and sign up
-  - Uploading a user profile picture
+## Website or other medium?
+I will be creating a website. The backend focus will allow for easier translation to other mediums in the future after this project such as a mobile app which would add great convenience for the user. 
 
-Here are a few examples to get you started with. During the proposal stage, you just need to create the tasks. Description and details can be edited at a later time. In addition, more tasks can be added in at a later time.
+## Goal
+The goal is to make it more convenient for car enthusiests to find and attend meets as well as make getting into the car scene more accessible for new enthusiests.
 
-| Task Name                   | Description                                                                                                   | Example                                                           |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Design Database schema      | Determine the models and database schema required for your project.                                           | [Link](https://github.com/hatchways/sb-capstone-example/issues/1) |
-| Source Your Data            | Determine where your data will come from. You may choose to use an existing API or create your own.           | [Link](https://github.com/hatchways/sb-capstone-example/issues/2) |
-| User Flows                  | Determine user flow(s) - think about what you want a user’s experience to be like as they navigate your site. | [Link](https://github.com/hatchways/sb-capstone-example/issues/3) |
-| Set up backend and database | Configure the environmental variables on your framework of choice for development and set up database.        | [Link](https://github.com/hatchways/sb-capstone-example/issues/4) |
-| Set up frontend             | Set up frontend framework of choice and link it to the backend with a simple API call for example.            | [Link](https://github.com/hatchways/sb-capstone-example/issues/5) |
-| User Authentication         | Fullstack feature - ability to authenticate (login and sign up) as a user                                     | [Link](https://github.com/hatchways/sb-capstone-example/issues/6) |
+## Demographic
+Car enthusiests of any age!
 
-## Labeling
+## DATA/API
+I will be using location data in order to plan the meets locations as well as car make and model data for the planned personal garage feature. My current main option is the [api ninjas car api](https://api-ninjas.com/api/cars). For the location api my current choice is mapquest.
 
-Labeling is a great way to separate out your tasks and to track progress. Here’s an [example](https://github.com/hatchways/sb-capstone-example/issues) of a list of issues that have labels associated.
+## Approach
+### Database Schema
+![schema](schema.jpg)
 
-| Label Type    | Description                                                                                                                                                                                                                                                                                                                     | Example                      |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| Difficulty    | Estimating the difficulty level will be helpful to determine if the project is unique and ready to be showcased as part of your portfolio - having a mix of task difficultlies will be essential.                                                                                                                               | Easy, Medium, Hard           |
-| Type          | If a frontend/backend task is large at scale (for example: more than 100 additional lines or changes), it might be a good idea to separate these tasks out into their own individual task. If a feature is smaller at scale (not more than 10 files changed), labeling it as fullstack would be suitable to review all at once. | Frontend, Backend, Fullstack |
-| Stretch Goals | You can also label certain tasks as stretch goals - as a nice to have, but not mandatory for completing this project.                                                                                                                                                                                                           | Must Have, Stretch Goal      |
+### Issues
+It might be difficult to convert my locations into storable data for my database. 
+
+### Sensitive Info?
+I will need to secure the users passwords.
+
+##Stretch Goal
+Be an active website for users to post their meets and expand their reach!
