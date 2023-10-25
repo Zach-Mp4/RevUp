@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../twitter-clone"
+		},
+		{
+			"path": "../../jquery-dom"
+		},
+		{
+			"path": "../../ajax-giphy-party"
+		},
+		{
+			"path": "../../Fruit-Search"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "RevUp"
+	}
+}
