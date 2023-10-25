@@ -1,10 +1,12 @@
 from operator import and_, or_
 import os
 
-from flask import Flask, render_template, request, flash, redirect, session, g
+from flask import Flask, jsonify, render_template, request, flash, redirect, session, g
 from sqlalchemy.exc import IntegrityError
 from forms import UserAddForm, LoginForm
 from models import db, connect_db, User, Rsvp, Car, Meet
+from keys import mapkey
+import requests
 
 CURR_USER_KEY = "curr_user"
 
@@ -106,3 +108,22 @@ def logout():
     do_logout()
     flash('Successfully Logged Out', 'success')
     return redirect('/login')
+
+
+####################
+#api routes
+@app.route('/api/locations/<location>')
+def get_locations(location):
+    URL = 'https://www.mapquestapi.com/search/v3/prediction'
+    params = {
+        'key': mapkey,
+        'countryCode': 'US',
+        'q': location,
+        'collection': 'adminArea',
+        'limit': 5
+    }
+    resp = requests.get(URL, params = params)
+    json = resp.json()
+    display_strings = [result["displayString"] for result in json["results"]]
+    print(display_strings)
+    return jsonify(display_strings)

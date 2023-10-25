@@ -2,6 +2,7 @@
 {% block head %}
 <script src="https://unpkg.com/axios/dist/axios.js"></script>
 <script src="/static/scripts/location.js"></script>
+<link rel="stylesheet" href="/static/stylesheets/signup.css">
 {% endblock %}
 
 {% block content %}
@@ -17,6 +18,9 @@
           {% if field.name == 'location' %}
           <div id="location-div">
             {{ field(placeholder=field.label.text, class="form-control", id="location-input") }}
+            <ul id="sug-list">
+
+            </ul>
           </div>
           {% else %}
           {{ field(placeholder=field.label.text, class="form-control") }}
