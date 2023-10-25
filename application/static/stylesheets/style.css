@@ -56,10 +56,6 @@
     opacity: 0.6;
   }
 
-  .navbar-left{
-    float: left;
-  }
-
   .navbar-right{
     
     display: flex;

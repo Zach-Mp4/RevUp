@@ -49,13 +49,6 @@ def do_logout():
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
-
-@app.route('/')
-def homepage():
-    if not g.user:
-        return render_template('home-anon.html')
-    else:
-        return render_template('home.html')
     
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -109,6 +102,15 @@ def logout():
     flash('Successfully Logged Out', 'success')
     return redirect('/login')
 
+#########################
+#Homepage route(s)
+
+@app.route('/')
+def homepage():
+    if not g.user:
+        return render_template('home-anon.html')
+    else:
+        return render_template('home.html')
 
 ####################
 #api routes
