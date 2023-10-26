@@ -162,7 +162,18 @@ class Meet(db.Model):
 
     creator_id = db.Column(
         db.Integer,
-        db.ForeignKey('users.id', ondelete='CASCADE')
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False
+    )
+
+    title = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    description = db.Column(
+        db.Text,
+        nullable=False
     )
 
     location = db.Column(

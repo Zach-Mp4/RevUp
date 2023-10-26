@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField
+from wtforms import StringField, PasswordField, DateTimeField
 from wtforms.validators import DataRequired, Email, Length
 
 
@@ -16,3 +16,11 @@ class LoginForm(FlaskForm):
 
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[Length(min=6)])
+
+class NewMeetForm(FlaskForm):
+    """Form for adding a new meet"""
+
+    title = StringField('Title', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    location = StringField('Location (Address)', validators=[DataRequired()])
+    date = DateTimeField('Date and Time', validators=[DataRequired()])

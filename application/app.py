@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, jsonify, render_template, request, flash, redirect, session, g
 from sqlalchemy.exc import IntegrityError
-from forms import UserAddForm, LoginForm
+from forms import UserAddForm, LoginForm, NewMeetForm
 from models import db, connect_db, User, Rsvp, Car, Meet
 from keys import mapkey
 import requests
@@ -55,6 +55,9 @@ def do_logout():
 def signup():
     form = UserAddForm()
 
+    if g.user:
+        return redirect('/')
+
     if form.validate_on_submit():
         try:
             user = User.signup(
@@ -66,8 +69,8 @@ def signup():
             db.session.commit()
 
         except IntegrityError:
-            flash("Username already taken", 'danger')
-            return render_template('users/signup.html', form=form)
+            flash("Username or email already taken", 'danger')
+            return render_template('signup.html', form=form)
 
         do_login(user)
 
@@ -79,6 +82,9 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+
+    if g.user:
+        return redirect('/')
 
     if form.validate_on_submit():
         user = User.authenticate(form.username.data,
@@ -111,6 +117,19 @@ def homepage():
         return render_template('home-anon.html')
     else:
         return render_template('home.html')
+    
+
+########################
+#meets routes
+
+@app.route('/meets/new', methods=['GET', 'POST'])
+def new_meet():
+    form = NewMeetForm()
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    
+    return render_template('new-meet.html', form = form)
 
 ####################
 #api routes
