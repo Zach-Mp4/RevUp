@@ -14,33 +14,33 @@
   color: #fff;
   text-align: center;
   padding: 1rem;
-  text-shadow: 0 0 8px #66757f;
   height: 100vh; 
 }
 
 #home-div{
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
   position: absolute;
   width: 100vw;
   left: 0;
-  bottom: 30%;
+  bottom: 0%;
   z-index: -1;
   background-size: cover;
   background-position: center center;
   color: #fff;
   text-align: center;
   padding: 1rem;
-  text-shadow: 0 0 8px #66757f;
   height: 100vh; 
+  background-color: #4e4e4e;
+  max-height: 100vh;
+  overflow: auto;
 }
 
 #home-div button{
   scale: 150%;
   display: inline-block;
-  background-color: #6f6f6f;
+  background-color: #858585;
   color: #fff;
   padding: 10px 20px; 
   border: none; 
@@ -49,6 +49,7 @@
   cursor: pointer; 
   transition: background-color 0.3s; 
   text-decoration: none; 
+  margin-top: 50%;
 }
 
 .form-control{
@@ -78,7 +79,6 @@
     color: #fff;
     text-align: center;
     padding: 1rem;
-    text-shadow: 0 0 8px #66757f;
     height: 100vh; 
   }
 
@@ -96,3 +96,128 @@
     float: right;
     margin-left: 55vw;
   }
+
+  #new-meet-page{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    left: 0;
+    z-index: -1;
+    background-image: url("/static/images/drift-cars.gif");
+    background-size: cover;
+    background-position: center center;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    height: 100vh; 
+  }
+
+  #new-meet-page input{
+    width: 200%;
+    position: relative;
+    right: 50%;
+    opacity: 0.6;
+  }
+
+/* Card container */
+.meet-card {
+  background-color: #fff; /* Card background color */
+  color: black;
+  border: 1px solid #e0e0e0; /* Border color */
+  border-radius: 5px; /* Rounded corners */
+  padding: 15px; /* Padding inside the card */
+  margin: 10px; /* Margin between cards */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle elevation effect */
+  width: 600px;
+  height: 200px;
+  text-align: left;
+}
+
+/* Title */
+.meet-card a {
+  font-size: 20px; /* Title font size */
+  font-weight: bold; /* Bold title */
+  color: #333; /* Title color */
+  display: block; /* Display title as a block element for spacing */
+  margin-bottom: 10px; /* Spacing below the title */
+}
+
+/* Creator */
+.meet-card p:nth-child(2) {
+  font-size: 16px; /* Creator font size */
+  margin-bottom: 8px; /* Spacing below the creator's name */
+}
+
+/* Description */
+.meet-card p:nth-child(3) {
+  font-size: 14px; /* Description font size */
+  margin-bottom: 10px; /* Spacing below the description */
+}
+
+/* Address */
+.meet-card p:nth-child(4) {
+  font-size: 14px; /* Address font size */
+  margin-bottom: 10px; /* Spacing below the address */
+}
+
+/* Date */
+.meet-card p:nth-child(5) {
+  font-size: 14px; /* Date font size */
+  margin-bottom: 0; /* No spacing below the date */
+}
+
+.description {
+  max-height: 3em;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  white-space: nowrap;
+}
+
+#user-div{
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 50vw;
+    left: 0;
+    z-index: -1;
+    background-color: #4e4e4e;
+    background-size: cover;
+    background-position: center center;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    height: 100vh;
+    max-width: 50vw;
+    white-space: normal;
+}
+
+#user-div h2{
+  margin-top: 50px;
+}
+
+#more-info {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 50vw;
+    left: 0;
+    z-index: -1;
+    background-color: #4e4e4e;
+    background-size: cover;
+    background-position: center center;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    height: 100vh;
+    max-width: 50vw;
+    white-space: normal;
+    left: 50vw;
+}

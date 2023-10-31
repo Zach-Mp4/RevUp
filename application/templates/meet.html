@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<div id="user-div">
+    <h2>{{meet.title}}</h2>
+    <h3>Created by: {{meet.creator.username}}</h3>
+    <p>{{meet.description}}</p>
+    <p>Location: {{meet.location}}</p>
+    <p>When? {{meet.date}}</p>
+</div>
+
+<div id="more-info">
+    <img src="/static/images/map.jpeg">
+</div>
+{% endblock %}

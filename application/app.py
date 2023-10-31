@@ -9,6 +9,7 @@ from keys import mapkey
 import requests
 
 CURR_USER_KEY = "curr_user"
+MAX_ITEMS = 50
 
 app = Flask(__name__)
 
@@ -18,7 +19,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
     os.environ.get('DATABASE_URL', 'postgresql:///revup'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_ECHO'] = False
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 # toolbar = DebugToolbarExtension(app)
@@ -116,7 +117,8 @@ def homepage():
     if not g.user:
         return render_template('home-anon.html')
     else:
-        return render_template('home.html')
+        meets = Meet.query.limit(MAX_ITEMS).all()
+        return render_template('home.html', meets = meets)
     
 
 ########################
@@ -129,7 +131,29 @@ def new_meet():
         flash('Please Login', 'danger')
         return redirect('/login')
     
+    if form.validate_on_submit():
+        newmeet = Meet(
+            creator_id = g.user.id,
+            title = form.title.data,
+            description = form.description.data,
+            location = form.location.data,
+            date = form.date.data
+        )
+
+        db.session.add(newmeet)
+        db.session.commit()
+        return redirect('/')
+    
     return render_template('new-meet.html', form = form)
+
+@app.route('/meets/<id>')
+def show_meet(id):
+    meet = Meet.query.get_or_404(id)
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    change_map(meet.location)
+    return render_template('meet.html', meet = meet)
 
 ####################
 #api routes
@@ -146,5 +170,41 @@ def get_locations(location):
     resp = requests.get(URL, params = params)
     json = resp.json()
     display_strings = [result["displayString"] for result in json["results"]]
-    print(display_strings)
     return jsonify(display_strings)
+
+@app.route('/api/addresses/<address>')
+def get_addresses(address):
+    URL = 'https://www.mapquestapi.com/search/v3/prediction'
+    params = {
+        'key': mapkey,
+        'countryCode': 'US',
+        'q': address,
+        'collection': 'address',
+        'limit': 5
+    }
+    resp = requests.get(URL, params = params)
+    json = resp.json()
+    display_strings = [result["displayString"] for result in json["results"]]
+    return jsonify(display_strings)
+
+def change_map(address):
+    URL = 'https://www.mapquestapi.com/staticmap/v5/map'
+    params = {
+        'key': mapkey,
+        'center': address,
+        'zoom': 13,
+        'locations': address
+    }
+
+    resp = requests.get(URL, params = params)
+    content = resp.content
+
+    local_image_path = 'static/images/map.jpeg'
+
+    with open(local_image_path, 'wb') as local_image_file:
+        local_image_file.write(content)
+    
+    return '<200> OK'
+    
+
+
