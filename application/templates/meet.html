@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block head %}
-
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
+<script src="/static/scripts/meet.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -10,9 +11,30 @@
     <p>{{meet.description}}</p>
     <p>Location: {{meet.location}}</p>
     <p>When? {{meet.date}}</p>
+
+    <h2>Users Attending:</h2>
+    <div id="attending-div">
+        <ul>
+            {% for rsvp in rsvps %}
+            <li>{{rsvp.user.username}}: 
+                {% if rsvp.car %}
+                {{rsvp.car.represent()}}</li>
+                {% else %}
+                No Car!
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
 <div id="more-info">
     <img src="/static/images/map.jpeg">
+    <div id="rsvp-div">
+        {% if meet not in g.user.rsvpd_meets %}
+        <button id="rsvp" data-meetid="{{meet.id}}" class="btn btn-primary btn-danger">RSVP?</button>
+        {% else %}
+        <button id="rsvp" data-meetid="{{meet.id}}" class="btn btn-primary btn-success">RSVP?</button>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

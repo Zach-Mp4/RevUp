@@ -12,7 +12,6 @@ function adjustElements(){
     if (isNavbarTogglerVisible() && $('#user-nav').hasClass('navbar-right')) {
         $('#user-nav').removeClass("navbar-right");
       } else if (!isNavbarTogglerVisible() && !$('#user-nav').hasClass('navbar-right')){
-        console.log("Navbar toggler button is hidden.");
         $('#user-nav').addClass("navbar-right");
       }
 }

@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_bcrypt import Bcrypt
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
@@ -42,18 +43,10 @@ class User(db.Model):
         unique=False
     )
 
-    default_car_id = db.Column(
-        db.Integer,
-        db.ForeignKey('cars.id'),
-        nullable=True
-    )
-
     password = db.Column(
         db.Text,
         nullable=False
     )
-
-    default_car = db.relationship("Car")
 
     cars = db.relationship(
         "Car",
@@ -71,8 +64,7 @@ class User(db.Model):
             username=username,
             email=email,
             password=hashed_pwd,
-            location = location,
-            default_car_id = None
+            location = location
         )
 
         db.session.add(user)
@@ -108,7 +100,7 @@ class Car(db.Model):
 
     id = db.Column(
         db.Integer,
-        primary_key=True,
+        primary_key=True
     )
 
     make = db.Column(
@@ -128,6 +120,17 @@ class Car(db.Model):
         nullable=False,
         unique=False
     )
+
+    def represent(self):
+        return f'{self.year} {self.make} {self.model}'
+    
+    def json(self):
+        return {
+            'id': self.id,
+            'year': self.year,
+            'make': self.make,
+            'model': self.model
+        }
 
 class User_Car(db.Model):
     """define the connection between the users and cars tables"""
@@ -196,6 +199,8 @@ class Meet(db.Model):
         backref='rsvpd_meets'
         )
     
+    rsvps = db.relationship('Rsvp')
+    
 
 
 class Rsvp(db.Model):
@@ -220,9 +225,13 @@ class Rsvp(db.Model):
         nullable=False
     )
 
+    user = db.relationship('User')
+
     car_id = db.Column(
         db.Integer,
         db.ForeignKey('cars.id', ondelete='CASCADE'),
         nullable=True
     )
+
+    car = db.relationship('Car')
 

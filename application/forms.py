@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, DateTimeLocalField
+from wtforms import SelectField, StringField, PasswordField, DateTimeLocalField
 from wtforms.validators import DataRequired, Email, Length
 
 
@@ -24,3 +24,11 @@ class NewMeetForm(FlaskForm):
     description = StringField('Description', validators=[DataRequired()])
     location = StringField('Location (Address)', validators=[DataRequired()])
     date = DateTimeLocalField('Date and Time', validators=[DataRequired()])
+
+class NewCarForm(FlaskForm):
+    """Form for adding a car"""
+    years = [str(year) for year in range(1984, 2024)]
+
+    year = SelectField('Year', choices=[(year, year) for year in years], validators=[DataRequired()])
+    make = StringField('Make', validators=[DataRequired()])
+    model = StringField('Model', validators=[DataRequired()])

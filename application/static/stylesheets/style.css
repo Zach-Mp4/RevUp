@@ -221,3 +221,63 @@
     white-space: normal;
     left: 50vw;
 }
+
+#more-info button{
+  margin-top: 50px;
+}
+
+#more-info h2{
+  margin-top: 50px;
+}
+
+#more-info ul{
+  list-style-type: none;
+  padding: 0; 
+  margin: 0;
+}
+
+#more-info img{
+  max-width: 100%; /* Make the image responsive within its container */
+  height: auto; /* Maintain the aspect ratio */
+}
+
+#car_form select{
+  height: 50px;
+}
+
+#add-car-page{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  left: 0;
+  z-index: -1;
+  background-image: url("/static/images/garage.gif");
+  background-size: cover;
+  background-position: center center;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  height: 100vh; 
+}
+
+#add-car-page input{
+  width: 200%;
+  position: relative;
+  right: 50%;
+  opacity: 0.6;
+}
+
+#attending-div{
+  width: 50vw;
+  height: 55vh;
+  overflow: auto;
+  align-items: center;
+}
+
+#attending-div ul{
+  list-style-type: None;
+}

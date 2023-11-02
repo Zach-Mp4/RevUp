@@ -3,9 +3,9 @@ import os
 
 from flask import Flask, jsonify, render_template, request, flash, redirect, session, g
 from sqlalchemy.exc import IntegrityError
-from forms import UserAddForm, LoginForm, NewMeetForm
+from forms import NewCarForm, UserAddForm, LoginForm, NewMeetForm
 from models import db, connect_db, User, Rsvp, Car, Meet
-from keys import mapkey
+from keys import mapkey, carkey
 import requests
 
 CURR_USER_KEY = "curr_user"
@@ -153,7 +153,49 @@ def show_meet(id):
         flash('Please Login', 'danger')
         return redirect('/login')
     change_map(meet.location)
-    return render_template('meet.html', meet = meet)
+    return render_template('meet.html', meet = meet, rsvps = meet.rsvps)
+
+
+####################
+#users routes
+@app.route('/users/<id>')
+def show_user(id):
+    user = User.query.get_or_404(id)
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    return render_template('user.html', user = user)
+
+
+####################
+#cars routes
+
+@app.route('/cars/add', methods=['GET', 'POST'])
+def add_car():
+    form = NewCarForm()
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    
+    if form.validate_on_submit():
+        year = form.year.data
+        make = form.make.data.lower()
+        model = form.model.data.lower()
+        car = Car.query.filter(Car.year == year, Car.make == make, Car.model == model).first()
+        if not car:
+            newcar = Car(year = year, make = make, model = model)
+            db.session.add(newcar)
+            db.session.commit()
+            g.user.cars.append(newcar)
+            db.session.commit()
+            return redirect(f'/users/{g.user.id}')
+        else:
+            g.user.cars.append(car)
+            db.session.commit()
+            return redirect(f'/users/{g.user.id}')
+
+    
+    return render_template('new-car.html', form = form)
 
 ####################
 #api routes
@@ -186,6 +228,51 @@ def get_addresses(address):
     json = resp.json()
     display_strings = [result["displayString"] for result in json["results"]]
     return jsonify(display_strings)
+
+@app.route('/api/rsvp/<meet_id>', methods=["POST"])
+def rsvp(meet_id):
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    
+    meet = Meet.query.get_or_404(meet_id)
+    if meet not in g.user.rsvpd_meets:
+        data = request.get_json()
+        car_id = data.get('carid')
+        if not car_id:
+            rsvp = Rsvp(user_id = g.user.id, meet_id = meet.id)
+            db.session.add(rsvp)
+            db.session.commit()
+        else:
+            rsvp = Rsvp(user_id = g.user.id, meet_id = meet.id, car_id = car_id)
+            db.session.add(rsvp)
+            db.session.commit()
+        return jsonify({
+            'action': 'rsvpd'
+        })
+    else:
+        g.user.rsvpd_meets.remove(meet)
+        db.session.commit()
+        return jsonify({
+            'action': 'did not rsvp'
+        })
+    
+@app.route('/api/cars/get_cars')
+def get_cars():
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    
+    cars = [car.json() for car in g.user.cars]
+    if cars:     
+        return jsonify(cars)
+    else:
+        return 'None'
+
+    
+
+#########################
+# Other Functions
 
 def change_map(address):
     URL = 'https://www.mapquestapi.com/staticmap/v5/map'
