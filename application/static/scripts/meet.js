@@ -6,14 +6,22 @@ $(document).ready(function () {
     $button.on('click', clickHandler);
 });
 
-function changeColor(resp){
+function changeColor(resp, car){
+    let currUser = $('#nav-username').text();
     if (resp['data']['action'] === 'rsvpd'){
         $button.addClass('btn-success');
         $button.removeClass('btn-danger');
+        if (car){
+            $('#attending-ul').append(`<li id="${currUser}">${currUser}: ${car}</li>`);
+        }
+        else{
+            $('#attending-ul').append(`<li id="${currUser}">${currUser}: No Car!</li>`);
+        }
     }
     else{
         $button.addClass('btn-danger');
         $button.removeClass('btn-success');
+        $(`#${currUser}`).remove();
     }
 }
 
@@ -37,13 +45,13 @@ async function clickHandler(){
 async function carClickHandler(){
     const url = `/api/rsvp/${meetId}`;
     let id = $(this).attr("id");
-    
+    let car = $(this).text();
     params = {
         carid: id
     }
 
     let resp = await axios.post(url, params);
-    changeColor(resp);
+    changeColor(resp, car);
     $('#cars-list').remove()
     return;
 }

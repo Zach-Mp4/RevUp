@@ -14,9 +14,9 @@
 
     <h2>Users Attending:</h2>
     <div id="attending-div">
-        <ul>
+        <ul id="attending-ul">
             {% for rsvp in rsvps %}
-            <li>{{rsvp.user.username}}: 
+            <li id="{{rsvp.user.username}}">{{rsvp.user.username}}: 
                 {% if rsvp.car %}
                 {{rsvp.car.represent()}}</li>
                 {% else %}

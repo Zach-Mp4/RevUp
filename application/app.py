@@ -237,14 +237,14 @@ def rsvp(meet_id):
     
     meet = Meet.query.get_or_404(meet_id)
     if meet not in g.user.rsvpd_meets:
-        data = request.get_json()
-        car_id = data.get('carid')
-        if not car_id:
-            rsvp = Rsvp(user_id = g.user.id, meet_id = meet.id)
+        try:
+            data = request.get_json()
+            car_id = data.get('carid')
+            rsvp = Rsvp(user_id = g.user.id, meet_id = meet.id, car_id = car_id)
             db.session.add(rsvp)
             db.session.commit()
-        else:
-            rsvp = Rsvp(user_id = g.user.id, meet_id = meet.id, car_id = car_id)
+        except:
+            rsvp = Rsvp(user_id = g.user.id, meet_id = meet.id)
             db.session.add(rsvp)
             db.session.commit()
         return jsonify({
