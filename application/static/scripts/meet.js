@@ -19,9 +19,9 @@ function changeColor(resp, car){
         }
     }
     else{
+        document.getElementById(currUser).remove();
         $button.addClass('btn-danger');
         $button.removeClass('btn-success');
-        $(`#${currUser}`).remove();
     }
 }
 
@@ -52,6 +52,6 @@ async function carClickHandler(){
 
     let resp = await axios.post(url, params);
     changeColor(resp, car);
-    $('#cars-list').remove()
+    $('#cars-list').remove();
     return;
 }
