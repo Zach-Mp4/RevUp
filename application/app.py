@@ -117,7 +117,8 @@ def homepage():
     if not g.user:
         return render_template('home-anon.html')
     else:
-        meets = Meet.query.limit(MAX_ITEMS).all()
+        # meets = Meet.query.limit(MAX_ITEMS).all()
+        meets = get_meets_in_range(50)
         return render_template('home.html', meets = meets)
     
 
@@ -292,6 +293,33 @@ def change_map(address):
         local_image_file.write(content)
     
     return '<200> OK'
+
+def get_meets_in_range(range):
+    URL = 'https://www.mapquestapi.com/directions/v2/route'
+
+    meets = Meet.query.all()
+    locations = [meet.location for meet in meets]
+
+    distances = []
+
+    counter = 0
+    for location in locations:
+        params = {
+        'key': mapkey,
+        'from': g.user.location,
+        'to': location
+    }
+        resp = requests.get(URL, params = params)
+        data = resp.json()
+        distance = (data['route']['distance'], locations[counter])
+        distances.append(distance)
+        counter += 1
+
+
+    filter = [distance[1] for distance in distances if distance[0] <= range]
+
+    final_meets = [meet for meet in meets if meet.location in filter]
+    return final_meets
     
 
 
