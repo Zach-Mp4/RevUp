@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, jsonify, render_template, request, flash, redirect, session, g
 from sqlalchemy.exc import IntegrityError
-from forms import NewCarForm, UserAddForm, LoginForm, NewMeetForm
+from forms import NewCarForm, UserAddForm, LoginForm, NewMeetForm, SelectRangeForm
 from models import db, connect_db, User, Rsvp, Car, Meet
 from keys import mapkey, carkey
 import requests
@@ -117,8 +117,11 @@ def homepage():
     if not g.user:
         return render_template('home-anon.html')
     else:
-        # meets = Meet.query.limit(MAX_ITEMS).all()
-        meets = get_meets_in_range(50)
+        meets = ''
+        if g.user.location:
+            meets = get_meets_in_range(50)
+        else:
+            meets = Meet.query.all()
         return render_template('home.html', meets = meets)
     
 
@@ -156,6 +159,28 @@ def show_meet(id):
     change_map(meet.location)
     return render_template('meet.html', meet = meet, rsvps = meet.rsvps)
 
+@app.route('/meets/search', methods=['GET', 'POST'])
+def show_meets_in_range():
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    
+    if not g.user.location:
+        flash('Please add a location to search for meets in your area!', 'danger')
+        return redirect(f'/users/{g.user.id}')
+    form = SelectRangeForm()
+
+    if form.validate_on_submit():
+        meets = ""
+        try:
+            meets = get_meets_in_range(float(form.range.data))
+        except:
+            meets = Meet.query.all()
+        return render_template('meets.html', meets = meets, form = form)
+
+    
+    meets = get_meets_in_range(25)
+    return render_template('meets.html', meets = meets, form = form)
 
 ####################
 #users routes
@@ -296,7 +321,6 @@ def change_map(address):
 
 def get_meets_in_range(range):
     URL = 'https://www.mapquestapi.com/directions/v2/route'
-
     meets = Meet.query.all()
     locations = [meet.location for meet in meets]
 

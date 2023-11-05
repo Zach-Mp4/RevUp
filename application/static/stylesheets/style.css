@@ -94,7 +94,7 @@
     display: flex;
     flex-direction: row;
     float: right;
-    margin-left: 55vw;
+    margin-left: 75vw;
   }
 
   #new-meet-page{
@@ -280,4 +280,10 @@
 
 #attending-div ul{
   list-style-type: None;
+}
+
+#apply {
+  margin-bottom: 25px;
+  margin-top: 25px !important;
+  scale: 1 !important;
 }
