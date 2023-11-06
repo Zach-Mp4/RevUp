@@ -201,6 +201,12 @@
   margin-top: 50px;
 }
 
+#user-div ul{
+  list-style-type: none;
+  padding: 0; 
+  margin: 0;
+}
+
 #more-info {
   display: flex;
     flex-direction: column;

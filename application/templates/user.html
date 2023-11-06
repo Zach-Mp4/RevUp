@@ -8,7 +8,7 @@
     <h3>Meets Attended:</h3>
     <ul>
         {% for meet in user.rsvpd_meets %}
-        <li>{{meet.title}}</li>
+        <li><a href="/meets/{{meet.id}}">{{meet.title}}</a></li>
         {% endfor %}
     </ul>
 </div>

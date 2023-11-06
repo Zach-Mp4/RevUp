@@ -34,6 +34,9 @@ async function clickHandler(){
         changeColor(resp);
         return;
     }
+    if ($('#cars-list').length > 0){
+        return;
+    }
     cars = cars.data;
     $('#rsvp-div').append('<ul id="cars-list"></ul>');
     for (let car of cars){
