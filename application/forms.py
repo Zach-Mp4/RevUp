@@ -38,3 +38,8 @@ class SelectRangeForm(FlaskForm):
     options = [25, 50, 75, 100, 150, 200, 500, "All Meets"]
 
     range = SelectField('Range (Mi)', choices=[(option, option) for option in options],validators=[DataRequired()])
+
+class PasswordForm(FlaskForm):
+    """A form used for password verification"""
+
+    password = PasswordField('Enter Your Password to Confirm', validators=[DataRequired()])

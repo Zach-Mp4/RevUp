@@ -1,10 +1,9 @@
 from operator import and_, or_
 import os
-# NEXT TASK IS TO ADD EDIT PAGES TO USER and MEET
 #THEN ALLOW USERS TO DELETE THEIR ACCOUNT, MEETS, AND THEIR CARS IN THEIR
 from flask import Flask, jsonify, render_template, request, flash, redirect, session, g
 from sqlalchemy.exc import IntegrityError
-from forms import NewCarForm, UserAddForm, LoginForm, NewMeetForm, SelectRangeForm
+from forms import NewCarForm, UserAddForm, LoginForm, NewMeetForm, SelectRangeForm, PasswordForm
 from models import db, connect_db, User, Rsvp, Car, Meet
 from keys import mapkey, carkey
 import requests
@@ -242,6 +241,25 @@ def edit_user():
             return redirect(f'/users/{user.id}')
 
     return render_template('edit-user.html', form = form)
+
+@app.route('/users/delete', methods=['GET', 'POST'])
+def delete_user():
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    form = PasswordForm()
+    if form.validate_on_submit():
+        user = User.authenticate(g.user.username, form.password.data)
+        if user:
+            do_logout()
+            User.query.filter(User.id == user.id).delete()
+            flash('Account Deleted Successfully.', 'success')
+            return redirect('/')
+        else:
+            flash('Incorrect Password', 'danger')
+            return redirect('/users/delete')
+    return render_template('delete-user.html', form = form)
+    
 ####################
 #cars routes
 
