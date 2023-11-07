@@ -1,6 +1,6 @@
 from operator import and_, or_
 import os
-#THEN ALLOW USERS TO DELETE THEIR ACCOUNT, MEETS, AND THEIR CARS IN THEIR
+
 from flask import Flask, jsonify, render_template, request, flash, redirect, session, g
 from sqlalchemy.exc import IntegrityError
 from forms import NewCarForm, UserAddForm, LoginForm, NewMeetForm, SelectRangeForm, PasswordForm
@@ -209,6 +209,21 @@ def show_meets_in_range():
     meets = get_meets_in_range(25)
     return render_template('meets.html', meets = meets, form = form)
 
+@app.route('/meets/<id>/delete')
+def delete_meet(id):
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    meet = Meet.query.get_or_404(id)
+    if g.user.id == meet.creator.id:
+        Meet.query.filter(Meet.id == meet.id).delete()
+        db.session.commit()
+        flash('Meet Deleted Successfully.', 'success')
+        return redirect(f'/users/{g.user.id}')
+    else:
+        flash("You don't have permission to do that.", 'danger')
+        return redirect(f'/meets/{id}')
+
 ####################
 #users routes
 @app.route('/users/<id>')
@@ -367,7 +382,25 @@ def get_cars():
     else:
         return 'None'
 
+@app.route('/api/cars/delete/<id>', methods=['DELETE'])
+def remove_car(id):
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
     
+    car = Car.query.get_or_404(id)
+
+    try:
+        g.user.cars.remove(car)
+        db.session.commit()
+        return jsonify({
+            'result': 'success'
+        })
+    except:
+        return jsonify({
+            'result': 'failed'
+        })
+
 
 #########################
 # Other Functions

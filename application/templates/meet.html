@@ -30,6 +30,7 @@
 <div id="more-info">
     {% if meet.creator.id == g.user.id %}
     <a href="/meets/{{meet.id}}/edit"><button class="btn btn-success">Edit Meet</button></a>
+    <a href="/meets/{{meet.id}}/delete"><button class="btn btn-danger">DELETE Meet</button></a>
     {% endif %}
     <img src="/static/images/map.jpeg">
     <div id="rsvp-div">

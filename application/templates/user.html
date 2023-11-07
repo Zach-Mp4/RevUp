@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
+<script src="/static/scripts/user.js"></script>
+<link rel="stylesheet" href="/static/stylesheets/signup.css">
+{% endblock %}
+
 {% block content %}
 <div id="user-div">
     {% if user.id == g.user.id %}
@@ -24,7 +30,7 @@
     <h2>Garage:</h2>
     <ul>
         {% for car in user.cars %}
-        <li>{{car.year}} {{car.make}} {{car.model}}</li>
+        <li>{{car.year}} {{car.make}} {{car.model}} {% if user.id == g.user.id %} <i style="cursor: grab;" id="{{car.id}}">&#x2715</i> {% endif %}</li>
         {% endfor %}
     </ul>
 
