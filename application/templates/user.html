@@ -2,6 +2,9 @@
 
 {% block content %}
 <div id="user-div">
+    {% if user.id == g.user.id %}
+    <a href="/users/edit"><button class="btn btn-success">Edit Profile</button></a>
+    {% endif %}
     <h2>{{user.username}}</h2>
     <h3>{{user.location}}</h3>
     <hr>

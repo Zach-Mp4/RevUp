@@ -8,8 +8,8 @@ class UserAddForm(FlaskForm):
 
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[Length(min=6)])
     location = StringField('Location (Optional, Can add this later.)')
+    password = PasswordField('Password', validators=[Length(min=6)])
 
 class LoginForm(FlaskForm):
     """Form for logging in users."""

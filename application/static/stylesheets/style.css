@@ -207,6 +207,10 @@
   margin: 0;
 }
 
+#user-div button{
+  margin-top: 50px;
+}
+
 #more-info {
   display: flex;
     flex-direction: column;
@@ -230,6 +234,7 @@
 
 #more-info button{
   margin-top: 50px;
+  margin-bottom: 10px;
 }
 
 #more-info h2{

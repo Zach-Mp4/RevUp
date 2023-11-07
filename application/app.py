@@ -1,6 +1,7 @@
 from operator import and_, or_
 import os
-
+# NEXT TASK IS TO ADD EDIT PAGES TO USER and MEET
+#THEN ALLOW USERS TO DELETE THEIR ACCOUNT, MEETS, AND THEIR CARS IN THEIR
 from flask import Flask, jsonify, render_template, request, flash, redirect, session, g
 from sqlalchemy.exc import IntegrityError
 from forms import NewCarForm, UserAddForm, LoginForm, NewMeetForm, SelectRangeForm
@@ -9,7 +10,6 @@ from keys import mapkey, carkey
 import requests
 
 CURR_USER_KEY = "curr_user"
-MAX_ITEMS = 50
 
 app = Flask(__name__)
 
@@ -54,6 +54,7 @@ def do_logout():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    """show a form to signup if user not logged in and handle the submission of the form"""
     form = UserAddForm()
 
     if g.user:
@@ -82,6 +83,7 @@ def signup():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """show a form to login if user is not logged in and handle the submission of the form"""
     form = LoginForm()
 
     if g.user:
@@ -114,6 +116,7 @@ def logout():
 
 @app.route('/')
 def homepage():
+    """show the homepage to the user"""
     if not g.user:
         return render_template('home-anon.html')
     else:
@@ -130,6 +133,7 @@ def homepage():
 
 @app.route('/meets/new', methods=['GET', 'POST'])
 def new_meet():
+    """show a form to add a new meet and handle the submission"""
     form = NewMeetForm()
     if not g.user:
         flash('Please Login', 'danger')
@@ -150,8 +154,31 @@ def new_meet():
     
     return render_template('new-meet.html', form = form)
 
+@app.route('/meets/<id>/edit', methods=['GET', 'POST'])
+def edit_meet(id):
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    meet = Meet.query.get_or_404(id)
+    if meet.creator.id == g.user.id:
+        form = NewMeetForm(obj = meet)
+        if form.validate_on_submit():
+            meet.title = form.title.data
+            meet.description = form.description.data
+            meet.location = form.location.data
+            meet.date = form.date.data
+
+            db.session.add(meet)
+            db.session.commit()
+            return redirect(f'/meets/{meet.id}')
+        return render_template('edit-meet.html', form = form)
+    else:
+        flash("You don't have permission to do that.", 'danger')
+        return redirect('/')
+
 @app.route('/meets/<id>')
 def show_meet(id):
+    """show a meets info"""
     meet = Meet.query.get_or_404(id)
     if not g.user:
         flash('Please Login', 'danger')
@@ -161,6 +188,7 @@ def show_meet(id):
 
 @app.route('/meets/search', methods=['GET', 'POST'])
 def show_meets_in_range():
+    """show a page to search for meets and handle the submission of the range select"""
     if not g.user:
         flash('Please Login', 'danger')
         return redirect('/login')
@@ -186,18 +214,40 @@ def show_meets_in_range():
 #users routes
 @app.route('/users/<id>')
 def show_user(id):
+    """show a users info"""
     user = User.query.get_or_404(id)
     if not g.user:
         flash('Please Login', 'danger')
         return redirect('/login')
     return render_template('user.html', user = user)
 
+@app.route('/users/edit', methods=['GET', 'POST'])
+def edit_user():
+    if not g.user:
+        flash('Please Login', 'danger')
+        return redirect('/login')
+    user = User.query.get_or_404(session[CURR_USER_KEY])
+    form = UserAddForm(obj = user)
 
+    if form.validate_on_submit():
+        password = form.password.data
+        user = User.authenticate(user.username, password)
+        if user:
+            user.username = form.username.data
+            user.email = form.email.data
+            user.location = form.location.data
+            db.session.add(user)
+            db.session.commit()
+            flash('Successfully edited profile!', 'success')
+            return redirect(f'/users/{user.id}')
+
+    return render_template('edit-user.html', form = form)
 ####################
 #cars routes
 
 @app.route('/cars/add', methods=['GET', 'POST'])
 def add_car():
+    """show a form for a user to add a car to their garage and handle the submission"""
     form = NewCarForm()
     if not g.user:
         flash('Please Login', 'danger')
@@ -227,6 +277,7 @@ def add_car():
 #api routes
 @app.route('/api/locations/<location>')
 def get_locations(location):
+    """return a list of 5 locations based on what the user has typed in so far"""
     URL = 'https://www.mapquestapi.com/search/v3/prediction'
     params = {
         'key': mapkey,
@@ -242,6 +293,7 @@ def get_locations(location):
 
 @app.route('/api/addresses/<address>')
 def get_addresses(address):
+    """return a list of 5 addresses based on what the user has typed in so far"""
     URL = 'https://www.mapquestapi.com/search/v3/prediction'
     params = {
         'key': mapkey,
@@ -257,6 +309,7 @@ def get_addresses(address):
 
 @app.route('/api/rsvp/<meet_id>', methods=["POST"])
 def rsvp(meet_id):
+    """rsvp a user if they are not rsvpd and un-rsvp if they are rsvpd"""
     if not g.user:
         flash('Please Login', 'danger')
         return redirect('/login')
@@ -285,6 +338,7 @@ def rsvp(meet_id):
     
 @app.route('/api/cars/get_cars')
 def get_cars():
+    """return a list of a users cars"""
     if not g.user:
         flash('Please Login', 'danger')
         return redirect('/login')
@@ -301,6 +355,7 @@ def get_cars():
 # Other Functions
 
 def change_map(address):
+    """change the map image file to the being viewed map"""
     URL = 'https://www.mapquestapi.com/staticmap/v5/map'
     params = {
         'key': mapkey,
@@ -320,6 +375,7 @@ def change_map(address):
     return '<200> OK'
 
 def get_meets_in_range(range):
+    """get meets within a users specified range"""
     URL = 'https://www.mapquestapi.com/directions/v2/route'
     meets = Meet.query.all()
     locations = [meet.location for meet in meets]
