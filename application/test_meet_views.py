@@ -47,11 +47,11 @@ class UserViewTestCase(TestCase):
         self.testuser = User.signup(username="testuser",
                                     email="test@test.com",
                                     password="testuser",
-                                    location=None)
+                                    location="Kearney, Mo")
 
         db.session.commit()
 
-        self.testmeet = Meet(creator_id = self.testuser.id, title = 'test title', description = 'test description', location = 'test location', date = '2023-11-30 18:05:00')
+        self.testmeet = Meet(creator_id = self.testuser.id, title = 'test title', description = 'test description', location = '7000 NE Barry Rd, Kansas City, MO 64157', date = '2023-11-30 18:05:00')
 
         db.session.add(self.testmeet)
         db.session.commit()
@@ -124,5 +124,47 @@ class UserViewTestCase(TestCase):
             self.assertIn('test title', html)
             self.assertIn('Created by: testuser', html)
 
+    def test_search_meets(self):
+        """test the search meets page get and post"""
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser.id
 
+            new_meet = Meet(creator_id = self.testuser.id, title = 'test title2', description = 'test description2', location = '661 S Walnut St, Gardner, KS 66030-7504, United States', date = '2023-11-30 18:05:00')
+            db.session.add(new_meet)
+            db.session.commit()
+
+            resp = c.get('/meets/search')
+
+            html = resp.get_data(as_text=True)
+
+            self.assertIn('test title', html)
+            self.assertNotIn('test title2', html)
+
+            form_data = {
+                'range': 100
+            }
+            resp = c.post('/meets/search', data = form_data)
+            html = resp.get_data(as_text=True)
+            self.assertIn('test title', html)
+            self.assertIn('test title2', html)
+        
+    def test_delete_meet(self):
+        """test delete a meet"""
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser.id
+            
+            resp = c.get(f'/meets/{self.testmeet.id}/delete')
+
+            meets = Meet.query.all()
+
+            self.assertNotIn(self.testmeet, meets)
+            self.assertEqual(resp.status_code, 302)
+            
+
+
+
+
+            
 
