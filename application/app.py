@@ -1,7 +1,5 @@
 from operator import and_, or_
 import os
-#fix time display not 24 hrs
-#dont show meets that have already passed when searching
 from flask import Flask, jsonify, render_template, request, flash, redirect, session, g
 from sqlalchemy.exc import IntegrityError
 from forms import NewCarForm, UserAddForm, LoginForm, NewMeetForm, SelectRangeForm, PasswordForm
@@ -453,6 +451,4 @@ def get_meets_in_range(range):
     today_datetime = datetime.now()
     final_meets = [meet for meet in meets if meet.location in filter and meet.date > today_datetime]
     return final_meets
-    
-
 

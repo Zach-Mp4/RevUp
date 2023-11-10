@@ -23,7 +23,7 @@
         <p>created by: {{meet.creator.username}}</p>
         <p class="description">{{meet.description}}</p>
         <p>Address: {{meet.location}}</p>
-        <p>Meet Date: {{meet.date}}</p>
+        <p>Meet Date: {{meet.date.strftime("%Y-%m-%d %I:%M %p")}}</p>
     </div>
 {% endfor %}
 </div>
