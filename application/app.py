@@ -4,12 +4,11 @@ from flask import Flask, jsonify, render_template, request, flash, redirect, ses
 from sqlalchemy.exc import IntegrityError
 from forms import NewCarForm, UserAddForm, LoginForm, NewMeetForm, SelectRangeForm, PasswordForm
 from models import db, connect_db, User, Rsvp, Car, Meet
-from keys import mapkey, carkey
 import requests
 from datetime import datetime
 
 CURR_USER_KEY = "curr_user"
-
+mapkey = os.environ.get('mapkey')
 app = Flask(__name__)
 
 # Get DB_URI from environ variable (useful for production/testing) or,
