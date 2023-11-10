@@ -8,6 +8,7 @@ from forms import NewCarForm, UserAddForm, LoginForm, NewMeetForm, SelectRangeFo
 from models import db, connect_db, User, Rsvp, Car, Meet
 from keys import mapkey, carkey
 import requests
+from datetime import datetime
 
 CURR_USER_KEY = "curr_user"
 
@@ -449,8 +450,8 @@ def get_meets_in_range(range):
 
 
     filter = [distance[1] for distance in distances if distance[0] <= range]
-
-    final_meets = [meet for meet in meets if meet.location in filter]
+    today_datetime = datetime.now()
+    final_meets = [meet for meet in meets if meet.location in filter and meet.date > today_datetime]
     return final_meets
     
 

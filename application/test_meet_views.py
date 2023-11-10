@@ -51,7 +51,7 @@ class UserViewTestCase(TestCase):
 
         db.session.commit()
 
-        self.testmeet = Meet(creator_id = self.testuser.id, title = 'test title', description = 'test description', location = '7000 NE Barry Rd, Kansas City, MO 64157', date = '2023-11-30 18:05:00')
+        self.testmeet = Meet(creator_id = self.testuser.id, title = 'test title', description = 'test description', location = '7000 NE Barry Rd, Kansas City, MO 64157', date = '2055-11-30 18:05:00')
 
         db.session.add(self.testmeet)
         db.session.commit()
