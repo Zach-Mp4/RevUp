@@ -125,13 +125,13 @@
 
 /* Card container */
 .meet-card {
-  background-color: #fff; /* Card background color */
+  background-color: #fff; 
   color: black;
-  border: 1px solid #e0e0e0; /* Border color */
-  border-radius: 5px; /* Rounded corners */
-  padding: 15px; /* Padding inside the card */
-  margin: 10px; /* Margin between cards */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle elevation effect */
+  border: 1px solid #e0e0e0;
+  border-radius: 5px; 
+  padding: 15px; 
+  margin: 10px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
   width: 600px;
   height: 200px;
   text-align: left;
@@ -139,35 +139,35 @@
 
 /* Title */
 .meet-card a {
-  font-size: 20px; /* Title font size */
-  font-weight: bold; /* Bold title */
-  color: #333; /* Title color */
-  display: block; /* Display title as a block element for spacing */
-  margin-bottom: 10px; /* Spacing below the title */
+  font-size: 20px; 
+  font-weight: bold; 
+  color: #333; 
+  display: block; 
+  margin-bottom: 10px; 
 }
 
 /* Creator */
 .meet-card p:nth-child(2) {
-  font-size: 16px; /* Creator font size */
-  margin-bottom: 8px; /* Spacing below the creator's name */
+  font-size: 16px; 
+  margin-bottom: 8px; 
 }
 
 /* Description */
 .meet-card p:nth-child(3) {
-  font-size: 14px; /* Description font size */
-  margin-bottom: 10px; /* Spacing below the description */
+  font-size: 14px; 
+  margin-bottom: 10px; 
 }
 
 /* Address */
 .meet-card p:nth-child(4) {
-  font-size: 14px; /* Address font size */
-  margin-bottom: 10px; /* Spacing below the address */
+  font-size: 14px; 
+  margin-bottom: 10px; 
 }
 
 /* Date */
 .meet-card p:nth-child(5) {
-  font-size: 14px; /* Date font size */
-  margin-bottom: 0; /* No spacing below the date */
+  font-size: 14px; 
+  margin-bottom: 0; 
 }
 
 .description {
@@ -248,8 +248,8 @@
 }
 
 #more-info img{
-  max-width: 100%; /* Make the image responsive within its container */
-  height: auto; /* Maintain the aspect ratio */
+  max-width: 100%; 
+  height: auto; 
 }
 
 #car_form select{
