@@ -69,6 +69,10 @@ def signup():
         except IntegrityError:
             flash("Username or email already taken", 'danger')
             return render_template('signup.html', form=form)
+        
+        except:
+            flash('Signup Error Please try again!', 'danger')
+            return render_template('signup.html', form = form)
 
         do_login(user)
 

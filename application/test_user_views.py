@@ -124,5 +124,34 @@ class UserViewTestCase(TestCase):
 
             self.assertNotIn(self.testuser, all_users)
 
+    def test_signup(self):
+        """test the signup page"""
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser.id
+            
+            c.get('/logout')
+            for i in range(100):
+                form_data = {
+                    'username': f'test{i}',
+                    'email': f'test{i}@gmail.com',
+                    'location': 'test location',
+                    'password': 'HashedPassword'
+                }
+
+                resp = c.post('/signup', data=form_data)
+
+                self.assertEqual(resp.status_code, 302)
+                if resp.status_code == 302:
+                    redirected_resp = c.get(resp.headers['Location'])
+                    html_content = redirected_resp.text
+
+                    self.assertIn('Create New Meet', html_content)
+                user = User.query.filter_by(username = form_data['username']).one()
+                print(user.username)
+                self.assertIsInstance(user, User)
+                c.get('/logout')
+        
+
         
     
