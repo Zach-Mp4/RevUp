@@ -435,17 +435,20 @@ def get_meets_in_range(range):
     distances = []
 
     counter = 0
-    for location in locations:
-        params = {
-        'key': mapkey,
-        'from': g.user.location,
-        'to': location
-    }
-        resp = requests.get(URL, params = params)
-        data = resp.json()
-        distance = (data['route']['distance'], locations[counter])
-        distances.append(distance)
-        counter += 1
+    try:
+        for location in locations:
+            params = {
+            'key': mapkey,
+            'from': g.user.location,
+            'to': location
+        }
+            resp = requests.get(URL, params = params)
+            data = resp.json()
+            distance = (data['route']['distance'], locations[counter])
+            distances.append(distance)
+            counter += 1
+    except:
+        return Meet.query.all()
 
 
     filter = [distance[1] for distance in distances if distance[0] <= range]
